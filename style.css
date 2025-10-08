@@ -1,0 +1,86 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #fdfcf9;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+header {
+  background: #7b5be4;
+  color: white;
+  padding: 1.5rem 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+main {
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 2rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.card.active {
+  display: block;
+}
+
+.cursive {
+  font-family: 'Allura', cursive;
+  font-size: 2.5rem;
+  margin: 1rem 0;
+}
+
+.print {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+button {
+  background: #7b5be4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button:hover {
+  background: #6a4fd4;
+}
+
+input {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 80%;
+  margin: 1rem 0;
+}
+
+.controls {
+  margin-top: 1.5rem;
+}
+
+.mode-btn.active {
+  background: #5a3fc0;
+}
+
+footer {
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #777;
+}
