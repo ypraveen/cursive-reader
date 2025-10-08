@@ -11,6 +11,12 @@ function shuffle(array) {
   }
 }
 
+function isTouchDevice() {
+  return (('ontouchstart' in window) ||
+          (navigator.maxTouchPoints > 0) ||
+          (navigator.msMaxTouchPoints > 0));
+}
+
 const cursiveWord = document.getElementById("cursive-word");
 const printWord = document.getElementById("print-word");
 const nextBtn = document.getElementById("next-btn");
@@ -34,33 +40,40 @@ function setCursive(element, word) {
 
 // Helper to create a hover-to-reveal box for the print word
 function setPrintWordHoverBox(element, word) {
-  // Clear previous content
   element.innerHTML = "";
-  // Create the hover box
   const box = document.createElement("div");
   box.className = "reveal-box";
-  box.textContent = "Hover to reveal";
-  box.style.display = "inline-block";
-  box.style.background = "#e0e0e0";
-  box.style.color = "#888";
-  box.style.padding = "0.5em 1em";
-  box.style.borderRadius = "8px";
-  box.style.cursor = "pointer";
-  box.style.fontWeight = "bold";
-  box.style.transition = "all 0.2s";
-  // Reveal on hover
-  box.addEventListener("mouseenter", () => {
-    box.textContent = word;
-    box.style.background = "#fff8dc";
-    box.style.color = "#333";
-    box.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
-  });
-  box.addEventListener("mouseleave", () => {
-    box.textContent = "Hover to reveal";
-    box.style.background = "#e0e0e0";
-    box.style.color = "#888";
-    box.style.boxShadow = "none";
-  });
+  box.textContent = isTouchDevice() ? "Tap to reveal" : "Hover to reveal";
+  // ... style as before ...
+
+  if (isTouchDevice()) {
+    box.addEventListener("click", () => {
+      if (box.textContent === "Tap to reveal") {
+        box.textContent = word;
+        box.style.background = "#fff8dc";
+        box.style.color = "#333";
+        box.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+      } else {
+        box.textContent = "Tap to reveal";
+        box.style.background = "#e0e0e0";
+        box.style.color = "#888";
+        box.style.boxShadow = "none";
+      }
+    });
+  } else {
+    box.addEventListener("mouseenter", () => {
+      box.textContent = word;
+      box.style.background = "#fff8dc";
+      box.style.color = "#333";
+      box.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+    });
+    box.addEventListener("mouseleave", () => {
+      box.textContent = "Hover to reveal";
+      box.style.background = "#e0e0e0";
+      box.style.color = "#888";
+      box.style.boxShadow = "none";
+    });
+  }
   element.appendChild(box);
 }
 
