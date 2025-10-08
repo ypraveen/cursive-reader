@@ -84,3 +84,7 @@ footer {
   font-size: 0.9rem;
   color: #777;
 }
+
+.reveal-box {
+  user-select: none;
+}
