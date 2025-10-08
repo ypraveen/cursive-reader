@@ -32,6 +32,38 @@ function setCursive(element, word) {
   element.style.fontSize = "2em";
 }
 
+// Helper to create a hover-to-reveal box for the print word
+function setPrintWordHoverBox(element, word) {
+  // Clear previous content
+  element.innerHTML = "";
+  // Create the hover box
+  const box = document.createElement("div");
+  box.className = "reveal-box";
+  box.textContent = "Hover to reveal";
+  box.style.display = "inline-block";
+  box.style.background = "#e0e0e0";
+  box.style.color = "#888";
+  box.style.padding = "0.5em 1em";
+  box.style.borderRadius = "8px";
+  box.style.cursor = "pointer";
+  box.style.fontWeight = "bold";
+  box.style.transition = "all 0.2s";
+  // Reveal on hover
+  box.addEventListener("mouseenter", () => {
+    box.textContent = word;
+    box.style.background = "#fff8dc";
+    box.style.color = "#333";
+    box.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+  });
+  box.addEventListener("mouseleave", () => {
+    box.textContent = "Hover to reveal";
+    box.style.background = "#e0e0e0";
+    box.style.color = "#888";
+    box.style.boxShadow = "none";
+  });
+  element.appendChild(box);
+}
+
 // Load words from words.txt
 fetch("words.txt")
   .then(response => response.text())
@@ -41,7 +73,7 @@ fetch("words.txt")
     words = lines.map(word => ({ print: word }));
     if (words.length === 0) {
       cursiveWord.textContent = "No words loaded!";
-      printWord.textContent = "";
+      printWord.innerHTML = "";
       quizCursive.textContent = "";
       return;
     }
@@ -51,12 +83,12 @@ fetch("words.txt")
     quizIndex = 0;
     // Initialize displays
     setCursive(cursiveWord, words[currentIndex].print);
-    printWord.textContent = words[currentIndex].print;
+    setPrintWordHoverBox(printWord, words[currentIndex].print);
     setCursive(quizCursive, words[quizIndex].print);
   })
   .catch(err => {
     cursiveWord.textContent = "Error loading words!";
-    printWord.textContent = "";
+    printWord.innerHTML = "";
     quizCursive.textContent = "";
     console.error(err);
   });
@@ -71,7 +103,7 @@ nextBtn.addEventListener("click", () => {
   currentIndex = nextIndex;
   const w = words[currentIndex];
   setCursive(cursiveWord, w.print);
-  printWord.textContent = w.print;
+  setPrintWordHoverBox(printWord, w.print);
 });
 
 // Quiz Mode - show a random word (not just next one)
