@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cursive Reader</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Cursive Reader</h1>
+    <p>Learn to read cursive English by comparing and practicing!</p>
+  </header>
+
+  <main>
+    <section id="learn-section" class="card active">
+      <h2>Learn Mode</h2>
+      <p class="cursive" id="cursive-word">𝓗𝓮𝓵𝓵𝓸</p>
+      <p class="print" id="print-word">Hello</p>
+      <button id="next-btn">Next Word</button>
+    </section>
+
+    <section id="quiz-section" class="card">
+      <h2>Quiz Mode</h2>
+      <p class="cursive" id="quiz-cursive">𝓒𝓪𝓽</p>
+      <input type="text" id="quiz-input" placeholder="Type what this says..." />
+      <button id="check-btn">Check</button>
+      <p id="feedback"></p>
+    </section>
+
+    <div class="controls">
+      <button id="learn-mode-btn" class="mode-btn active">Learn</button>
+      <button id="quiz-mode-btn" class="mode-btn">Quiz</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>Made with ❤️ for students learning cursive | <a href="https://github.com/">GitHub</a></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
