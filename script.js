@@ -1,17 +1,8 @@
-const words = [
-  { cursive: "𝓗𝓮𝓵𝓵𝓸", print: "Hello" },
-  { cursive: "𝓒𝓪𝓽", print: "Cat" },
-  { cursive: "𝓑𝓸𝓸𝓴", print: "Book" },
-  { cursive: "𝓢𝓬𝓱𝓸𝓸𝓵", print: "School" },
-  { cursive: "𝓕𝓻𝓲𝓮𝓷𝓭", print: "Friend" },
-  { cursive: "𝓛𝓸𝓿𝓮", print: "Love" },
-  { cursive: "𝓦𝓻𝓲𝓽𝓲𝓷𝓰", print: "Writing" },
-  { cursive: "𝓣𝓱𝓪𝓷𝓴", print: "Thank" },
-];
-
+// Load words.txt and initialize
+let words = [];
 let currentIndex = 0;
+let quizIndex = 0;
 
-// Elements
 const cursiveWord = document.getElementById("cursive-word");
 const printWord = document.getElementById("print-word");
 const nextBtn = document.getElementById("next-btn");
@@ -26,25 +17,57 @@ const quizSection = document.getElementById("quiz-section");
 const learnModeBtn = document.getElementById("learn-mode-btn");
 const quizModeBtn = document.getElementById("quiz-mode-btn");
 
+// Helper to style cursive words
+function setCursive(element, word) {
+  element.textContent = word;
+  element.style.fontFamily = '"Dancing Script", "Brush Script MT", cursive';
+  element.style.fontSize = "2em";
+}
+
+// Load words from words.txt
+fetch("words.txt")
+  .then(response => response.text())
+  .then(text => {
+    // Split lines, remove empty, trim
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    words = lines.map(word => ({ print: word }));
+    if (words.length === 0) {
+      cursiveWord.textContent = "No words loaded!";
+      printWord.textContent = "";
+      quizCursive.textContent = "";
+      return;
+    }
+    // Initialize displays
+    setCursive(cursiveWord, words[0].print);
+    printWord.textContent = words[0].print;
+    setCursive(quizCursive, words[0].print);
+  })
+  .catch(err => {
+    cursiveWord.textContent = "Error loading words!";
+    printWord.textContent = "";
+    quizCursive.textContent = "";
+    console.error(err);
+  });
+
 // Learn Mode
 nextBtn.addEventListener("click", () => {
+  if (words.length === 0) return;
   currentIndex = (currentIndex + 1) % words.length;
   const w = words[currentIndex];
-  cursiveWord.textContent = w.cursive;
+  setCursive(cursiveWord, w.print);
   printWord.textContent = w.print;
 });
 
 // Quiz Mode
-let quizIndex = 0;
-
 checkBtn.addEventListener("click", () => {
+  if (words.length === 0) return;
   const answer = quizInput.value.trim().toLowerCase();
   const correct = words[quizIndex].print.toLowerCase();
   if (answer === correct) {
     feedback.textContent = "✅ Correct!";
     feedback.style.color = "green";
     quizIndex = (quizIndex + 1) % words.length;
-    quizCursive.textContent = words[quizIndex].cursive;
+    setCursive(quizCursive, words[quizIndex].print);
     quizInput.value = "";
   } else {
     feedback.textContent = "❌ Try again!";
