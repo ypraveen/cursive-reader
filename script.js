@@ -3,6 +3,14 @@ let words = [];
 let currentIndex = 0;
 let quizIndex = 0;
 
+// Helper to shuffle array in-place
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
 const cursiveWord = document.getElementById("cursive-word");
 const printWord = document.getElementById("print-word");
 const nextBtn = document.getElementById("next-btn");
@@ -37,10 +45,14 @@ fetch("words.txt")
       quizCursive.textContent = "";
       return;
     }
+    // Shuffle words for random order
+    shuffle(words);
+    currentIndex = 0;
+    quizIndex = 0;
     // Initialize displays
-    setCursive(cursiveWord, words[0].print);
-    printWord.textContent = words[0].print;
-    setCursive(quizCursive, words[0].print);
+    setCursive(cursiveWord, words[currentIndex].print);
+    printWord.textContent = words[currentIndex].print;
+    setCursive(quizCursive, words[quizIndex].print);
   })
   .catch(err => {
     cursiveWord.textContent = "Error loading words!";
@@ -49,16 +61,20 @@ fetch("words.txt")
     console.error(err);
   });
 
-// Learn Mode
+// Learn Mode - show a random word (not just next one)
 nextBtn.addEventListener("click", () => {
   if (words.length === 0) return;
-  currentIndex = (currentIndex + 1) % words.length;
+  let nextIndex;
+  do {
+    nextIndex = Math.floor(Math.random() * words.length);
+  } while (nextIndex === currentIndex && words.length > 1); // Avoid repeating if possible
+  currentIndex = nextIndex;
   const w = words[currentIndex];
   setCursive(cursiveWord, w.print);
   printWord.textContent = w.print;
 });
 
-// Quiz Mode
+// Quiz Mode - show a random word (not just next one)
 checkBtn.addEventListener("click", () => {
   if (words.length === 0) return;
   const answer = quizInput.value.trim().toLowerCase();
@@ -66,7 +82,11 @@ checkBtn.addEventListener("click", () => {
   if (answer === correct) {
     feedback.textContent = "✅ Correct!";
     feedback.style.color = "green";
-    quizIndex = (quizIndex + 1) % words.length;
+    let nextQuizIndex;
+    do {
+      nextQuizIndex = Math.floor(Math.random() * words.length);
+    } while (nextQuizIndex === quizIndex && words.length > 1); // Avoid repeating if possible
+    quizIndex = nextQuizIndex;
     setCursive(quizCursive, words[quizIndex].print);
     quizInput.value = "";
   } else {
